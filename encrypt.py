@@ -17,7 +17,7 @@ def main(unused_argv):
   with open(FLAGS.pub, 'rb') as f:
     pub_data = f.read()
   if FLAGS.swtpm:
-    esys_ctx = tpm.ESAPI(tcti = "mssim:host=127.0.0.1:2322")
+    esys_ctx = tpm.ESAPI("mssim:host=127.0.0.1,port=2321")
   else:
     esys_ctx = tpm.ESAPI()
   key_handle = esys_ctx.load_external(tpm.TPM2B_PUBLIC.unmarshal(pub_data), tpm.ESYS_TR.NONE)
