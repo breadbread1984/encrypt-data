@@ -3,30 +3,31 @@
 from absl import flags, app
 from os import urandom
 import tpm2_pytss as tpm
-from cryptography.hazmat.primitives import serialization, hashes
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
-from cryptography.hazmat.primitives.asymmetric import rsa, padding
 
 FLAGS = flags.FLAGS
 
 def add_options():
   flags.DEFINE_string('pub', default = 'key.pub', help = 'path to public key')
-  flags.DEFINE_string('priv', default = 'key.priv', help = 'path to private key')
   flags.DEFINE_string('input', default = None, help = 'path to file to encrypt')
   flags.DEFINE_string('output', default = 'output.enc', help = 'path to output crypted file')
+  flags.DEFINE_boolean('swtpm', default = False, help = 'whether use emulator')
 
 def main(unused_argv):
-  with open('key.pub', 'rb') as f:
-    pub_key = serialization.load_pem_public_key(f.read())
+  with open(FLAGS.pub, 'rb') as f:
+    pub_data = f.read()
+  if FLAGS.swtpm:
+    esys_ctx = tpm.ESAPI(tcti = "mssim:host=127.0.0.1:2322")
+  else:
+    esys_ctx = tpm.ESAPI()
+  key_handle = esys_ctx.load_external(tpm.TPM2B_PUBLIC.unmarshal(pub_data), tpm.ESYS_TR.NONE)
+
   aes_key = urandom(32)
-  encrypted_aes_key = pub_key.encrypt(
-    aes_key,
-    padding.OAEP(
-      mgf = padding.MGF1(algorithm = hashes.SHA256()),
-      algorithm = hashes.SHA256(),
-      label = None
-    )
-  )
+  encrypted_aes_key = esys_ctx.RSA_Encrypt(
+    key_handle, aes_key,
+    scheme = tpm.TPMT_RSA_SCHEME(scheme = tpm.TPM2_ALG.OAEP),
+    label = b""
+  )[1]
   iv = urandom(12)
   cipher = Cipher(algorithms.AES(aes_key), modes.GCM(iv))
   encryptor = cipher.encryptor()
