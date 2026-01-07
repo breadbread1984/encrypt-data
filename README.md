@@ -60,4 +60,6 @@ tpm2_create -G rsa -u key.pub -r key.priv -C primary.ctx -a "fixedtpm|fixedparen
 
 note that value given to **-a** of **tpm2_create** must match the attribute value output by **tpm2_createprimary**
 
+## encrypt golden data
+
 
