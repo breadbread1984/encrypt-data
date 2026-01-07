@@ -23,7 +23,9 @@ def main(unused_argv):
     esys_ctx = tpm.ESAPI("swtpm:host=127.0.0.1,port=2321")
   else:
     esys_ctx = tpm.ESAPI()
-  key_handle = esys_ctx.load_external(tpm.TPM2B_SENSITIVE.unmarshal(priv_data), tpm.TPM2B_PUBLIC.unmarshal(pub_data), tpm.ESYS_TR.NONE)
+  priv_obj, _ = tpm.TPM2B_SENSITIVE.unmarshal(priv_data)
+  pub_obj, _ = tpm.TPM2B_PUBLIC.unmarshal(pub_data)
+  key_handle = esys_ctx.load_external(in_private = priv_obj, in_public = pub_obj, hierarchy = tpm.ESYS_TR.NONE)
 
   aes_key = urandom(32)
   encrypted_aes_key = esys_ctx.RSA_Encrypt(
