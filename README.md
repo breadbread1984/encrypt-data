@@ -4,12 +4,6 @@ This project demos how to encrypt golden data in docker
 
 # Usage
 
-## If your develop on a virtual platform (VM or wsl2) Install TPM emulator if you develop on virtual platform
-
-```shell
-sudo apt swtpm swtpm-tools
-```
-
 ## Install prerequisite packages
 
 ### If you develop on bare metal platform
