@@ -9,6 +9,7 @@ FLAGS = flags.FLAGS
 
 def add_options():
   flags.DEFINE_string('pub', default = 'key.pub', help = 'path to public key')
+  flags.DEFINE_string('priv', default = 'key.priv', help = 'path to private key')
   flags.DEFINE_string('input', default = None, help = 'path to file to encrypt')
   flags.DEFINE_string('output', default = 'output.enc', help = 'path to output crypted file')
   flags.DEFINE_boolean('swtpm', default = False, help = 'whether use emulator')
@@ -16,11 +17,13 @@ def add_options():
 def main(unused_argv):
   with open(FLAGS.pub, 'rb') as f:
     pub_data = f.read()
+  with open(FLAGS.priv, 'rb') as f:
+    priv_data = f.read()
   if FLAGS.swtpm:
-    esys_ctx = tpm.ESAPI("mssim:host=127.0.0.1,port=2321")
+    esys_ctx = tpm.ESAPI("swtpm:host=127.0.0.1,port=2321")
   else:
     esys_ctx = tpm.ESAPI()
-  key_handle = esys_ctx.load_external(tpm.TPM2B_PUBLIC.unmarshal(pub_data), tpm.ESYS_TR.NONE)
+  key_handle = esys_ctx.load_external(tpm.TPM2B_SENSITIVE.unmarshal(priv_data), tpm.TPM2B_PUBLIC.unmarshal(pub_data), tpm.ESYS_TR.NONE)
 
   aes_key = urandom(32)
   encrypted_aes_key = esys_ctx.RSA_Encrypt(
