@@ -25,7 +25,7 @@ def main(unused_argv):
     esys_ctx = tpm.ESAPI()
   priv_obj, _ = tpm.TPM2B_SENSITIVE.unmarshal(priv_data)
   pub_obj, _ = tpm.TPM2B_PUBLIC.unmarshal(pub_data)
-  key_handle = esys_ctx.load_external(in_private = priv_obj, in_public = pub_obj, hierarchy = tpm.ESYS_TR.NONE)
+  key_handle = esys_ctx.load_external(in_private = priv_obj, in_public = pub_obj, hierarchy = tpm.ESYS_TR.RH_OWNER)
 
   aes_key = urandom(32)
   encrypted_aes_key = esys_ctx.RSA_Encrypt(
