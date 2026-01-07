@@ -3,7 +3,9 @@
 from absl import flags, app
 from os import urandom
 import tpm2_pytss as tpm
+from cryptography.hazmat.primitives import serialization, hashes
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+from cryptography.hazmat.primitives.asymmetric import rsa, padding
 
 FLAGS = flags.FLAGS
 
@@ -15,11 +17,17 @@ def add_options():
 
 def main(unused_argv):
   with open('key.pub', 'rb') as f:
-    pub_key = f.read()
+    pub_key = serialization.load_pem_public_key(f.read())
   aes_key = urandom(32)
-  encrypted_aes_key = rsa_encrypt(aes_key, pub_key)
+  encrypted_aes_key = pub_key.encrypt(
+    aes_key,
+    padding.OAEP(
+      mgf = padding.MGF1(algorithm = hashes.SHA256()),
+      algorithm = hashes.SHA256(),
+      label = None
+    )
+  )
   iv = urandom(12)
-
   cipher = Cipher(algorithms.AES(aes_key), modes.GCM(iv))
   encryptor = cipher.encryptor()
 
