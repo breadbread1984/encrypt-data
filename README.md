@@ -9,13 +9,13 @@ This project demos how to encrypt golden data in docker
 ### If you develop on bare metal platform
 
 ```shell
-sudo apt install tpm2-tools
+sudo apt install tpm2-tools libtss2-dev pkg-config
 ```
 
 ### If you develop on a virtual platform (VM or wsl2)
 
 ```shell
-sudo apt install swtpm swtpm-tools tpm2-tools libtpms0 tpm2-abrmd
+sudo apt install swtpm swtpm-tools tpm2-tools libtpms0 tpm2-abrmd libtss2-dev pkg-config
 ```
 
 launch emulator
@@ -62,4 +62,6 @@ note that value given to **-a** of **tpm2_create** must match the attribute valu
 
 ## encrypt golden data
 
-
+```shell
+python3 encrypt.py --input <path/to/plaintext> --output <path/to/ciphertext>
+```
