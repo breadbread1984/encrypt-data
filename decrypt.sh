@@ -15,9 +15,12 @@ DECRYPTED_FILE="${FILE%.tpm_enc}.dec"  # 解密后的文件名
 # 分离加密文件和加密密钥
 ENCRYPTED_CONTENT="${FILE}.enc"
 ENCRYPTED_KEY="${FILE}.rsa_key"
-dd if=$FILE bs=256 skip=0 of=$ENCRYPTED_CONTENT
-dd if=$FILE bs=256 skip=$(stat -c%s $ENCRYPTED_CONTENT) of=$ENCRYPTED_KEY
-echo "here"
+RSA_SIZE=256  # Confirm: tpm2_readpublic -c bind_key.ctx | openssl rsa -pubin -modulus | wc -c
+TOTAL_SIZE=$(stat -c %s "$FILE")
+ENC_SIZE=$((TOTAL_SIZE - RSA_SIZE))
+dd if="$FILE" of=$ENCRYPTED_CONTENT bs=1 count="$ENC_SIZE" status=none
+dd if="$FILE" of=$ENCRYPTED_KEY bs=1 skip="$ENC_SIZE" status=none
+
 # 使用TPM解密AES密钥和IV
 tpm2_rsadecrypt -c $KEY_CTX -o session_key.bin $ENCRYPTED_KEY
 
