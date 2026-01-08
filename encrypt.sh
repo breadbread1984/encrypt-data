@@ -1,6 +1,5 @@
 #!/bin/bash
 
-#!/bin/bash
 tpm2_flushcontext -t
 tpm2_load -C primary.ctx -u key.pub -r key.priv -c bind_key.ctx
 FILE=$1
