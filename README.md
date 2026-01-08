@@ -63,7 +63,7 @@ note that value given to **-a** of **tpm2_create** must match the attribute valu
 ## encrypt golden data
 
 ```shell
-bash encrypt.sh <path/to/plaintext>
+bash encrypt.sh <path/to/plaintext> <path/to/ciphertext>
 ```
 
 upon running successfully, a file with extension **.enc** appears. it is the cipher of the golden data
@@ -71,5 +71,5 @@ upon running successfully, a file with extension **.enc** appears. it is the cip
 ## decrypt golden data
 
 ```shell
-bash decrypt.sh <path/to/cipher>
+bash decrypt.sh <path/to/ciphertext> <path/to/plaintext>
 ```

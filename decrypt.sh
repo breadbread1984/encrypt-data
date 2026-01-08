@@ -9,8 +9,8 @@ tpm2_load -C primary.ctx -u key.pub -r key.priv -c bind_key.ctx
 
 # 解密脚本
 FILE=$1
+DEC_FILE=$2
 KEY_CTX="bind_key.ctx"  # TPM RSA上下文
-DECRYPTED_FILE="${FILE%.tpm_enc}.dec"  # 解密后的文件名
 
 # 分离加密文件和加密密钥
 ENCRYPTED_CONTENT="${FILE}.enc"
@@ -29,7 +29,7 @@ AES_KEY=$(head -c 32 session_key.bin | xxd -p -c 32)
 IV=$(tail -c 16 session_key.bin | xxd -p -c 16)
 
 # 使用AES密钥和IV解密文件
-openssl enc -d -aes-256-cbc -in $ENCRYPTED_CONTENT -out $DECRYPTED_FILE -K $AES_KEY -iv $IV
+openssl enc -d -aes-256-cbc -in $ENCRYPTED_CONTENT -out ${DEC_FILE} -K $AES_KEY -iv $IV
 
 # 清理临时文件
 rm -f session_key.bin $ENCRYPTED_CONTENT $ENCRYPTED_KEY

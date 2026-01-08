@@ -8,6 +8,7 @@ tpm2_flushcontext -t
 tpm2_load -C primary.ctx -u key.pub -r key.priv -c bind_key.ctx
 
 FILE=$1
+ENC_FILE=$2
 KEY_CTX="bind_key.ctx"  # 你的TPM RSA上下文
 AES_KEY=$(openssl rand -hex 32)  # 32字节AES-256密钥
 IV=$(openssl rand -hex 16)       # 16字节IV
@@ -23,6 +24,6 @@ cat aes.key iv.bin > session_key.bin
 tpm2_rsaencrypt -c $KEY_CTX -o ${FILE}.rsa_key session_key.bin
 
 # 打包
-cat ${FILE}.enc ${FILE}.rsa_key > ${FILE}.enc
+cat ${FILE}.enc ${FILE}.rsa_key > ${ENC_FILE}
 rm -f *.bin ${FILE}.enc ${FILE}.rsa_key aes.key iv.bin
 tpm2_flushcontext -t
