@@ -63,5 +63,7 @@ note that value given to **-a** of **tpm2_create** must match the attribute valu
 ## encrypt golden data
 
 ```shell
-python3 encrypt.py --input <path/to/plaintext> --output <path/to/ciphertext>
+bash encrypt.sh <path/to/plaintext>
 ```
+
+upon running successfully, a file with extension **.tpm_enc** appears. it is the cipher of the golden data
