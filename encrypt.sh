@@ -1,7 +1,12 @@
 #!/bin/bash
 
+set -e          # 命令失败退出（推荐）
+set -u          # 未定义变量退出
+set -o pipefail # 管道中任一命令失败退出
+
 tpm2_flushcontext -t
 tpm2_load -C primary.ctx -u key.pub -r key.priv -c bind_key.ctx
+
 FILE=$1
 KEY_CTX="bind_key.ctx"  # 你的TPM RSA上下文
 AES_KEY=$(openssl rand -hex 32)  # 32字节AES-256密钥
@@ -20,3 +25,4 @@ tpm2_rsaencrypt -c $KEY_CTX -o ${FILE}.rsa_key session_key.bin
 # 打包
 cat ${FILE}.enc ${FILE}.rsa_key > ${FILE}.tpm_enc
 rm -rf *.bin ${FILE}.enc ${FILE}.rsa_key aes.key iv.bin
+tpm2_flushcontext -t

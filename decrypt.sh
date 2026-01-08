@@ -1,7 +1,12 @@
 #!/bin/bash
 
+set -e          # 命令失败退出（推荐）
+set -u          # 未定义变量退出
+set -o pipefail # 管道中任一命令失败退出
+
 tpm2_flushcontext -t
 tpm2_load -C primary.ctx -u key.pub -r key.priv -c bind_key.ctx
+
 # 解密脚本
 FILE=$1
 KEY_CTX="bind_key.ctx"  # TPM RSA上下文
@@ -26,4 +31,4 @@ openssl enc -d -aes-256-cbc -in $ENCRYPTED_CONTENT -out $DECRYPTED_FILE -K $AES_
 # 清理临时文件
 rm -f session_key.bin $ENCRYPTED_CONTENT $ENCRYPTED_KEY
 
-echo "解密完成：$DECRYPTED_FILE"
+tpm2_flushcontext -t
