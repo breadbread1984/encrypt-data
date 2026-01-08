@@ -24,5 +24,5 @@ tpm2_rsaencrypt -c $KEY_CTX -o ${FILE}.rsa_key session_key.bin
 
 # 打包
 cat ${FILE}.enc ${FILE}.rsa_key > ${FILE}.tpm_enc
-rm -rf *.bin ${FILE}.enc ${FILE}.rsa_key aes.key iv.bin
+rm -f *.bin ${FILE}.enc ${FILE}.rsa_key aes.key iv.bin
 tpm2_flushcontext -t

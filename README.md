@@ -55,7 +55,7 @@ kill -SIGTERM <PID>
 ```shell
 tpm2_flushcontext -t
 tpm2_createprimary -C o -g sha256 -G rsa -c primary.ctx
-tpm2_create -G rsa -u key.pub -r key.priv -C primary.ctx -a "fixedtpm|fixedparent|sensitivedataorigin|userwithauth|restricted|decrypt" -c bind_key.ctx
+tpm2_create -G rsa -u key.pub -r key.priv -C primary.ctx -a "fixedtpm|fixedparent|sensitivedataorigin|userwithauth|decrypt" -c bind_key.ctx
 ```
 
 note that value given to **-a** of **tpm2_create** must match the attribute value output by **tpm2_createprimary**
