@@ -11,7 +11,7 @@ services:
       - TPM2TOOLS_TCTI=swtpm:host=localhost,port=2321
     tmpfs:
       - /tmp/decrypted:size=1G
-    command: bash decode_dataset.sh
+    command: bash prepare_dataset.sh
 
 secrets:
   tpm2_primary_key:
