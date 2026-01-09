@@ -50,7 +50,9 @@ ps -aux | grep swtpm
 kill -SIGTERM <PID>
 ```
 
-## create bind key
+## create key pair
+
+### create primary key and key pair
 
 ```shell
 tpm2_flushcontext -t
@@ -60,7 +62,7 @@ tpm2_create -G rsa -u key.pub -r key.priv -C primary.ctx -a "fixedtpm|fixedparen
 
 note that value given to **-a** of **tpm2_create** must match the attribute value output by **tpm2_createprimary**
 
-## encrypt golden data
+### encrypt golden data with key pair
 
 ```shell
 bash encrypt.sh <path/to/plaintext> <path/to/ciphertext>
@@ -68,8 +70,10 @@ bash encrypt.sh <path/to/plaintext> <path/to/ciphertext>
 
 upon running successfully, a file with extension **.enc** appears. it is the cipher of the golden data
 
-## decrypt golden data
+### decrypt golden data with key pair
 
 ```shell
 bash decrypt.sh <path/to/ciphertext> <path/to/plaintext>
 ```
+
+## 
