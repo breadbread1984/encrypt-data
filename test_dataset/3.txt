@@ -1,0 +1,1 @@
+2026-01-09 10:16 HKT: Docker Compose swtpm TCP 端口 2321 映射测试成功。

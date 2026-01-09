@@ -62,7 +62,7 @@ tpm2_create -G rsa -u key.pub -r key.priv -C primary.ctx -a "fixedtpm|fixedparen
 
 note that value given to **-a** of **tpm2_create** must match the attribute value output by **tpm2_createprimary**
 
-### encrypt golden data with key pair
+### encrypting golden data with key pair
 
 ```shell
 bash encrypt.sh <path/to/plaintext> <path/to/ciphertext>
@@ -70,10 +70,41 @@ bash encrypt.sh <path/to/plaintext> <path/to/ciphertext>
 
 upon running successfully, a file with extension **.enc** appears. it is the cipher of the golden data
 
-### decrypt golden data with key pair
+### decrypting golden data with key pair
 
 ```shell
 bash decrypt.sh <path/to/ciphertext> <path/to/plaintext>
 ```
 
-## 
+## 3. create docker swarm
+
+### create docker swarm 
+
+```shell
+docker swarm init --advertise-addr <swarm service ip>
+```
+
+create a docker swarm and add current host into this swarm. the command will show token with which to join the swarm
+
+### join other hosts to the swarm
+
+```shell
+docker swarm join --token <token> <swarm service ip>:<swarm service port>
+```
+
+### leave the swarm
+
+```shell
+docker swarm leave
+```
+
+### add key pair to docker secret
+
+```shell
+cat key.pub | docker secret create tpm2_public_key -
+cat key.priv | docker secret create tpm2_private_key -
+```
+
+**remove key pair and primary key from current host**
+
+### 

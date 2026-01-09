@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  trainset:
+    secrets:
+      - tpm2_public_key
+      - tpm2_private_key
+    image: ubuntu:22.04
+    privileged: true
+    ports:
+      - "127.0.0.1:2321:2321"
+      - "127.0.0.1:2322:2322"
+    environment:
+      - TPM2TOOLS_TCTI="swtpm:host=host.docker.internal,port=2321"
+    volumes:
+      - /tmp/mytpm:/tmp/mytpm:ro
+    tmpfs:
+      - /tmp/decrypted:size=1G
+    command: |
+
