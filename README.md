@@ -126,4 +126,22 @@ docker build -f Dockerfile.swtpm -t myapp:v1 .
 
 ```shell
 docker stack deploy -c services_swtpm.yaml myapp
+```
+
+use the following command to see your deployed service
+
+```shell
+docker stack ls
 ``` 
+
+use the following command to remove your service
+
+```shell
+docker stack rm myapp
+```
+
+use the following command to see container logs
+
+```shell
+docker service logs myapp_trainset
+```

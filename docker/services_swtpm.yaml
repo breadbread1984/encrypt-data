@@ -6,12 +6,8 @@ services:
       - tpm2_public_key
       - tpm2_private_key
     image: myapp:v1
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     environment:
-      - TPM2TOOLS_TCTI="swtpm:host=host.docker.internal,port=2321"
-    volumes:
-      - /tmp/mytpm:/tmp/mytpm:ro
+      - TPM2TOOLS_TCTI="swtpm:host=localhost,port=2321"
     tmpfs:
       - /tmp/decrypted:size=1G
     command: bash decode_dataset.sh
@@ -19,5 +15,5 @@ services:
 secrets:
   tpm2_public_key:
     external: true
-  tmp2_private_key:
+  tpm2_private_key:
     external: true
