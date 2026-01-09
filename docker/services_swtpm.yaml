@@ -9,9 +9,8 @@ services:
       context: .
       dockerfile: Dockerfile.swtpm
     privileged: true
-    ports:
-      - "127.0.0.1:2321:2321"
-      - "127.0.0.1:2322:2322"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
       - TPM2TOOLS_TCTI="swtpm:host=host.docker.internal,port=2321"
     volumes:
