@@ -120,4 +120,10 @@ cat key.priv | docker secret create tpm2_private_key -
 ```shell
 cd docker
 docker build -f Dockerfile.swtpm -t myapp:v1 .
+```
+
+### deploy service to docker swarm
+
+```shell
+docker stack deploy -c services_swtpm.yaml myapp
 ``` 
