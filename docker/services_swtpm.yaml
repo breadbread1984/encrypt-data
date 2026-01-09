@@ -5,9 +5,7 @@ services:
     secrets:
       - tpm2_public_key
       - tpm2_private_key
-    build:
-      context: .
-      dockerfile: Dockerfile.swtpm
+    image: myapp:v1
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:
