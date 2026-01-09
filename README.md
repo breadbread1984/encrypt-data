@@ -4,7 +4,7 @@ This project demos how to encrypt golden data in docker
 
 # Usage
 
-## Install prerequisite packages
+## 1. Install prerequisite packages
 
 ### If you develop on bare metal platform
 
@@ -50,7 +50,7 @@ ps -aux | grep swtpm
 kill -SIGTERM <PID>
 ```
 
-## create key pair
+## 2. create key pair
 
 ### create primary key and key pair
 
