@@ -4,11 +4,12 @@ set -e          # 命令失败退出（推荐）
 set -u          # 未定义变量退出
 set -o pipefail # 管道中任一命令失败退出
 
+PRIMARY_KEY=/run/secrets/tpm2_primary_key
 PUBLIC_KEY=/run/secrets/tpm2_public_key
 PRIVATE_KEY=/run/secrets/tmp2_private_key
 
 tpm2_flushcontext -t
-tpm2_load -C primary.ctx -u ${PUBLIC_KEY} -r {PRIVATE_KEY} -c bind_key.ctx
+tpm2_load -C ${PRIMARY_KEY} -u ${PUBLIC_KEY} -r ${PRIVATE_KEY} -c bind_key.ctx
 
 # 解密脚本
 FILE=$1

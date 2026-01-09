@@ -3,6 +3,7 @@ version: '3'
 services:
   trainset:
     secrets:
+      - tpm2_primary_key
       - tpm2_public_key
       - tpm2_private_key
     image: myapp:v1
@@ -13,6 +14,8 @@ services:
     command: bash decode_dataset.sh
 
 secrets:
+  tpm2_primary_key:
+    external: true
   tpm2_public_key:
     external: true
   tpm2_private_key:

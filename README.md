@@ -109,6 +109,7 @@ docker swarm leave
 ### add key pair to docker secret
 
 ```shell
+cat primary.ctx | docker secret create tpm2_primary_key -
 cat key.pub | docker secret create tpm2_public_key -
 cat key.priv | docker secret create tpm2_private_key -
 ```
