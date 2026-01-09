@@ -6,5 +6,5 @@ COPY . .
 
 RUN apt update
 
-RUN apt install swtpm swtpm-tools tpm2-tools libtpms0 tpm2-abrmd libtss2-dev pkg-config -y
+RUN apt install swtpm swtpm-tools tpm2-tools libtpms0 tpm2-abrmd libtss2-dev pkg-config xxd -y
 
