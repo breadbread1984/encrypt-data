@@ -16,3 +16,8 @@ services:
       - /tmp/decrypted:size=1G
     command: bash decode_dataset.sh
 
+secrets:
+  tpm2_public_key:
+    external: true
+  tmp2_private_key:
+    external: true
