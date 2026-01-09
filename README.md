@@ -27,7 +27,7 @@ sudo swtpm_setup --tpmstate /tmp/mytpm --tpm2 --overwrite \
   --create-platform-cert \
   --logfile /tmp/mytpm/swtpm.log \
   --log level=10
-sudo swtpm socket --tpmstate dir=/tmp/mytpm --tpm2 --server type=tcp,port=2321 --ctrl type=tcp,port=2322 --flags not-need-init,startup-clear
+sudo swtpm socket --tpmstate dir=/tmp/mytpm --tpm2 --server type=tcp,port=2321,bindaddr=0.0.0.0 --ctrl type=tcp,port=2322,bindaddr=0.0.0.0 --flags not-need-init,startup-clear
 ```
 
 the above commands will block the terminal, open another terminal to start up tpm
