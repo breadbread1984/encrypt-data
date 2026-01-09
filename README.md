@@ -76,6 +76,14 @@ upon running successfully, a file with extension **.enc** appears. it is the cip
 bash decrypt.sh <path/to/ciphertext> <path/to/plaintext>
 ```
 
+### create encoded dataset
+
+```shell
+bash encode_dataset.sh
+```
+
+**remove original dataset from current host**
+
 ## 3. create docker swarm
 
 ### create docker swarm 
@@ -107,4 +115,9 @@ cat key.priv | docker secret create tpm2_private_key -
 
 **remove key pair and primary key from current host**
 
-### 
+### build docker image
+
+```shell
+cd docker
+docker build -f Dockerfile.swtpm -t myapp:v1 .
+``` 

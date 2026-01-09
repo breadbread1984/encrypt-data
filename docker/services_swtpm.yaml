@@ -8,7 +8,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.swtpm
-    privileged: true
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:
