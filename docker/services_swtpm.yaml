@@ -18,5 +18,5 @@ services:
       - /tmp/mytpm:/tmp/mytpm:ro
     tmpfs:
       - /tmp/decrypted:size=1G
-    command: |
+    command: bash decode_dataset.sh
 
