@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 
 services:
   trainset:
@@ -11,7 +11,15 @@ services:
       - TPM2TOOLS_TCTI=swtpm:host=localhost,port=2321
     tmpfs:
       - /tmp/decrypted:size=1G
+    volumes:
+      - /tmp/mytpm:/tmp/mytpm
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      - TPM2TOOLS_TCTI=swtpm:host=host.docker.internal,port=2321
     command: bash prepare_dataset.sh
+    networks:
+      - overlay-net
 
 secrets:
   tpm2_primary_key:
@@ -20,3 +28,7 @@ secrets:
     external: true
   tpm2_private_key:
     external: true
+
+networks:
+  overlay-net:
+    driver: overlay
