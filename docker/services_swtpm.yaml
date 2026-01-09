@@ -5,7 +5,9 @@ services:
     secrets:
       - tpm2_public_key
       - tpm2_private_key
-    image: ubuntu:22.04
+    build:
+      context: .
+      dockerfile: Dockerfile.swtpm
     privileged: true
     ports:
       - "127.0.0.1:2321:2321"
