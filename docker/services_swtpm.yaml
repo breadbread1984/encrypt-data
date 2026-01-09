@@ -8,7 +8,7 @@ services:
       - tpm2_private_key
     image: myapp:v1
     environment:
-      - TPM2TOOLS_TCTI="swtpm:host=localhost,port=2321"
+      - TPM2TOOLS_TCTI=swtpm:host=localhost,port=2321
     tmpfs:
       - /tmp/decrypted:size=1G
     command: bash decode_dataset.sh
