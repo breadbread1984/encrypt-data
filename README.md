@@ -50,7 +50,47 @@ ps -aux | grep swtpm
 kill -SIGTERM <PID>
 ```
 
-## 2. create key pair
+## 2. restrict docker cp
+
+### create rule
+
+```shell
+cat > /etc/apparmor.d/docker-nocp << EOF
+profile docker-nocp flags=(attach_disconnected) {
+  # 允许基本操作
+  capability dac_override,
+  /usr/bin/docker ixr,
+  /var/run/docker.sock rw,
+  
+  # 禁止 cp
+  deny /usr/bin/docker -> /** { EACCES }
+  deny /bin/cp -> /** { EACCES }
+}
+EOF
+```
+
+### apply rule
+
+```shell
+sudo apparmor_parser -r /etc/apparmor.d/docker-nocp
+sudo aa-enforce /etc/apparmor.d/docker-nocp
+```
+
+### remove rule (in the future)
+
+```shell
+sudo aa-disable /etc/apparmor.d/docker-nocp
+sudo apparmor_parser -R /etc/apparmor.d/docker-nocp
+sudo rm /etc/apparmor.d/docker-nocp
+```
+
+```shell
+sudo rm -rf /var/cache/apparmor/*docker-nocp*
+sudo aa-status | grep docker
+sudo systemctl reload apparmor
+```
+
+## 3. create key pair
 
 ### create primary key and key pair
 
@@ -84,7 +124,7 @@ bash encode_dataset.sh
 
 **remove original dataset from current host**
 
-## 3. create docker swarm
+## 4. create docker swarm
 
 ### create docker swarm 
 
